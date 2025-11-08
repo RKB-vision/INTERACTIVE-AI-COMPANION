@@ -10,7 +10,7 @@ def speak():
         audio=recognizer.listen(source)
         try:
             text=recognizer.recognize_google(audio)
-            print("You : ",text)
+            print("You :",text)
             return text
         except sr.UnknownValueError:
             print("Did not Understand what you said")
@@ -25,29 +25,26 @@ engine=tts.init()
 engine.setProperty('voice','com.apple.speech.synthesis.voice.alex')
 engine.setProperty("rate",200)
 
-engine.say("Hello! Welcome to the Project. Can I  know your name sir?")
+engine.say("Hello! Welcome to the Project. I am your virtual assistant.")
 engine.runAndWait()
-
-name = speak()
-if name: # Check if 'name' is NOT None
-    engine.say(f"Welcome {name.split()[0]}.Good to see you. Tell me what you want to know ")
-    engine.runAndWait()
-
-else:
-    # Handle the failure gracefully, maybe ask again or skip the question
-    engine.say("I didn't catch your name. Moving on.")
-    engine.runAndWait()
-
+time.sleep(1)
+count=0
 while True:
-    engine.say("Anything else you want to know?")
-    engine.runAndWait()
+    count+=1
+    if count==1:
+        engine.say("What question do you have?")
+        engine.runAndWait()
+    else:
+        engine.say("Anything else?")
+        engine.runAndWait()
+    time.sleep(3)
     prompt = speak()
 
     if not prompt:
         engine.say("I didn't get your prompt. If you want to exit, type exit or type the prompt")
         engine.runAndWait()
         prompt = input("Enter your prompt: ").strip()
-
+    
     if prompt.lower() == "exit":
         engine.say("Goodbye!")
         engine.runAndWait()
@@ -57,3 +54,6 @@ while True:
     print("Chatbot Response:", response)
     engine.say(response)
     engine.runAndWait()
+    time.sleep(10)
+
+print(f"Exiting the program.Bravo! You gave {count} prompts.")
